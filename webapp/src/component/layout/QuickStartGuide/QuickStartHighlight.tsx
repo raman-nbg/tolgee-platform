@@ -7,7 +7,7 @@ import {
   useGlobalActions,
   useGlobalContext,
 } from 'tg.globalContext/GlobalContext';
-import { HighlightItem } from './types';
+import { HighlightItem } from './enums';
 
 const StyledHighlighter = styled('div')<{
   offset: number;
@@ -75,7 +75,6 @@ const StyledPopperActions = styled('div')`
 type Props = {
   children: React.ReactNode;
   itemKey: HighlightItem;
-  focusSensitive?: boolean;
   message?: string;
   offset?: number;
   fullfiled?: boolean;
@@ -87,7 +86,6 @@ type Props = {
 export const QuickStartHighlight = ({
   children,
   itemKey,
-  focusSensitive,
   message,
   offset = 0,
   fullfiled,
@@ -101,8 +99,8 @@ export const QuickStartHighlight = ({
   const itemActive = useGlobalContext(
     (c) => c.quickStartGuide.active === itemKey
   );
-  const guideOpen = useGlobalContext((c) => c.quickStartGuide.open);
-  const active = itemActive && guideOpen;
+  const enabled = useGlobalContext((c) => c.quickStartGuide.enabled);
+  const active = itemActive && enabled;
   const placement = messagePlacement ?? (rightPanelWidth ? 'right' : 'bottom');
 
   const { t } = useTranslate();
@@ -118,7 +116,7 @@ export const QuickStartHighlight = ({
 
   const { quickStartVisited, quickStartSkipTips } = useGlobalActions();
 
-  const visible = active && guideOpen;
+  const visible = active && enabled;
 
   function handleCompleted() {
     setPopperOpen(false);
@@ -166,6 +164,8 @@ export const QuickStartHighlight = ({
                   color="primary"
                   sx={{ padding: '0px 8px', minWidth: 40 }}
                   onClick={handleCompleted}
+                  data-cy="quick-start-highlight-ok"
+                  data-cy-item={itemKey}
                 >
                   {t('quick_start_highlight_ok')}
                 </Button>
@@ -181,7 +181,7 @@ export const QuickStartHighlight = ({
     }
   }
 
-  if (disabled) {
+  if (disabled || !visible) {
     return <>{children}</>;
   }
 
@@ -196,9 +196,10 @@ export const QuickStartHighlight = ({
           dashed: message,
         })}
         onClick={active && !message ? handleCompleted : undefined}
-        onFocus={focusSensitive ? handleCompleted : undefined}
         ref={wrapperRef}
         borderradius={borderRadius}
+        data-cy="quick-start-highlight"
+        data-cy-item={itemKey}
       >
         {withTooltip(children)}
       </StyledHighlighter>

@@ -1,9 +1,10 @@
+import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import {
   HighlightItem,
   ItemStep,
-} from 'tg.component/layout/QuickStartGuide/types';
+} from 'tg.component/layout/QuickStartGuide/enums';
 import { LINKS, PARAMS } from 'tg.constants/links';
 import { useApiQuery } from 'tg.service/http/useQueryApi';
 import type { useInitialDataService } from './useInitialDataService';
@@ -13,9 +14,11 @@ export const useQuickStartGuide = (
 ) => {
   const [active, setActive] = useState<HighlightItem[]>([]);
   const [activeStep, setActiveStep] = useState<ItemStep>();
+  const floating = useMediaQuery(`@media (max-width: ${1200}px)`);
   const match = useRouteMatch(LINKS.PROJECT.template);
   const projectIdParam = match?.params[PARAMS.PROJECT_ID];
   const projectId = isNaN(projectIdParam) ? undefined : projectIdParam;
+  const [floatingOpen, setFloatingOpen] = useState(false);
 
   const organizationSlug = initialData.data.preferredOrganization?.slug;
   const isOwner =
@@ -38,10 +41,7 @@ export const useQuickStartGuide = (
   const completed =
     initialData.data.preferredOrganization?.quickStart?.completedSteps || [];
 
-  const allCompleted =
-    lastProjectId === undefined
-      ? [...completed]
-      : ['new_project', ...completed];
+  const allCompleted = completed;
 
   function quickStartBegin(step: ItemStep, items: HighlightItem[]) {
     setActiveStep(step);
@@ -58,7 +58,9 @@ export const useQuickStartGuide = (
   }
 
   function quickStartCompleteStep(item: ItemStep) {
-    initialData.completeGuideStep(item);
+    if (enabled) {
+      initialData.completeGuideStep(item);
+    }
   }
 
   function skipTips() {
@@ -69,17 +71,30 @@ export const useQuickStartGuide = (
     }
   }
 
+  const enabled =
+    initialData.data.preferredOrganization?.quickStart?.finished === false &&
+    isOwner;
+
+  const open =
+    enabled &&
+    (floating
+      ? floatingOpen
+      : initialData.data.preferredOrganization?.quickStart?.open);
+
   const state = {
-    open:
-      initialData.data.preferredOrganization?.quickStart?.finished === false &&
-      isOwner,
+    enabled,
+    open,
     active: active[0],
     lastProjectId,
     completed: allCompleted,
+    floating,
   };
 
   const actions = {
-    quickStartDismiss: initialData.dismissGuide,
+    quickStartFinish: initialData.finishGuide,
+    setQuickStartOpen: floating
+      ? setFloatingOpen
+      : initialData.setQuickStartOpen,
     quickStartBegin,
     quickStartVisited,
     quickStartCompleteStep,
