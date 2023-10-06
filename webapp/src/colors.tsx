@@ -54,6 +54,7 @@ export type QuickStart = {
   successBackground: string;
   topBorder: string;
   progressBackground: string;
+  highlightColor: string;
 };
 
 export const colors = {

@@ -77,7 +77,7 @@ export const ProjectMembersView: FunctionComponent = () => {
             message={t('quick_start_item_invitations_hint')}
             disabled={inviteOpen}
             borderRadius="5px"
-            offset={5}
+            offset={10}
           >
             <Box>
               <Box
@@ -125,7 +125,7 @@ export const ProjectMembersView: FunctionComponent = () => {
             message={t('quick_start_item_members_hint')}
             disabled={inviteOpen}
             borderRadius="5px"
-            offset={5}
+            offset={10}
           >
             <Box>
               <PaginatedHateoasList

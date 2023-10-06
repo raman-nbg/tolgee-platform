@@ -129,6 +129,8 @@ const DashboardProjectListItem = (p: ProjectWithStatsModel) => {
     <QuickStartHighlight
       itemKey="demo_project"
       disabled={p.name !== 'Demo project'}
+      borderRadius="4px"
+      offset={1}
     >
       <StyledContainer
         data-cy="dashboard-projects-list-item"

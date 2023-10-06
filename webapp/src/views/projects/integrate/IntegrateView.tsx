@@ -1,5 +1,12 @@
 import { default as React, FunctionComponent, useEffect } from 'react';
-import { Box, Step, StepContent, StepLabel, Stepper } from '@mui/material';
+import {
+  Box,
+  Link,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+} from '@mui/material';
 import { T, useTranslate } from '@tolgee/react';
 
 import { LINKS, PARAMS } from 'tg.constants/links';
@@ -48,6 +55,20 @@ export const IntegrateView: FunctionComponent = () => {
       ]}
       maxWidth="normal"
     >
+      <Box my={2}>
+        <T
+          keyName="project_integrate_description"
+          params={{
+            link: (
+              <Link
+                href="https://tolgee.io/integrations"
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            ),
+          }}
+        />
+      </Box>
       <Stepper
         activeStep={activeStep}
         orientation="vertical"
@@ -60,7 +81,7 @@ export const IntegrateView: FunctionComponent = () => {
           <QuickStartHighlight
             itemKey="integrate_form"
             message={t('quick_start_item_integrate_form_hint')}
-            offset={8}
+            offset={2}
             borderRadius="5px"
           >
             <StepContent data-cy="integrate-choose-your-weapon-step-content">

@@ -11,7 +11,7 @@ import { HighlightItem } from './enums';
 
 const StyledHighlighter = styled('div')<{
   offset: number;
-  borderradius?: string;
+  borderradius: string;
 }>`
   display: contents;
   & > * {
@@ -22,7 +22,6 @@ const StyledHighlighter = styled('div')<{
     position: absolute;
     inset: ${({ offset }) => -offset}px;
     border-radius: ${({ borderradius }) => borderradius};
-    border: 2px solid ${({ theme }) => theme.palette.primary.main};
     pointer-events: none;
     transition: opacity 0.5s ease-in-out, box-shadow 0.5s ease-in-out,
       transform 0.5s ease-in-out;
@@ -33,7 +32,7 @@ const StyledHighlighter = styled('div')<{
     position: absolute;
     inset: ${({ offset }) => -offset}px;
     border-radius: ${({ borderradius }) => borderradius};
-    box-shadow: 0px 0px 0px 4px ${({ theme }) => theme.palette.primary.main};
+    box-shadow: 0px 0px 4px 4px ${({ theme }) => theme.palette.primary.main};
     pointer-events: none;
     transition: opacity 0.5s ease-in-out, box-shadow 0.5s ease-in-out,
       transform 0.5s ease-in-out;
@@ -45,12 +44,18 @@ const StyledHighlighter = styled('div')<{
   &.highlight.visible > *:after {
     opacity: 1;
   }
+  &.highlight > *:after {
+    border: 1px solid ${({ theme }) => theme.palette.primary.main};
+  }
   &.expanded > *:before {
-    box-shadow: 0px 0px 0px 8px ${({ theme }) => theme.palette.primary.main};
+    box-shadow: 0px 0px 4px 8px ${({ theme }) => theme.palette.primary.main};
   }
 
   &.dashed.visible > *:after {
     opacity: 1;
+  }
+  &.dashed > *:after {
+    border: 2px solid ${({ theme }) => theme.palette.primary.main};
   }
   &.dashed > *:after {
     border-style: dashed;

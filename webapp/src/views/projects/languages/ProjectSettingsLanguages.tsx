@@ -51,7 +51,7 @@ export const ProjectSettingsLanguages = () => {
         itemKey="add_language"
         message={t('quick_start_item_add_language_hint')}
         borderRadius="5px"
-        offset={5}
+        offset={10}
       >
         <Box>
           {canEditLanguages && (
@@ -124,7 +124,7 @@ export const ProjectSettingsLanguages = () => {
           itemKey="machine_translation"
           message={t('quick_start_item_machine_translation_hint')}
           borderRadius="5px"
-          offset={5}
+          offset={10}
         >
           <Box>
             <Box mt={4} mb={2}>
