@@ -161,5 +161,5 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
 
 subprojects {
     task allDeps(type: DependencyReportTask) {}
+    ext['hibernate.version'] = hibernateVersion
 }
-
